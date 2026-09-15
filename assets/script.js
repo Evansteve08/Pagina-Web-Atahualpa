@@ -10,11 +10,11 @@ const productos = [
     },
     {
         id: 2,
-        nombre: "Ajiaco Santafereño",
+        nombre: "Mojarra Frita",
         categoria: "fuertes",
         precio: 32000,
-        descripcion: "Sopa tradicional con tres tipos de papa, pollo desmechado, mazorca, servido con alcaparras y crema de leche.",
-        imagen: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=500&q=80"
+        descripcion: "Mojarra frita acompañada de arroz, ensalada, tajadas de plátano y arepa.",
+        imagen: "./assets/img/mojarra.jpg"
     },
     {
         id: 3,
@@ -34,7 +34,7 @@ const productos = [
     },
     {
         id: 5,
-        nombre: "Sancocho Especcial",
+        nombre: "Sancocho Especial",
         categoria: "entradas",
         precio: 12000,
         descripcion: "Dulce arepa de maíz tierno a la plancha con abundante queso campesino derretido.",
@@ -45,8 +45,8 @@ const productos = [
         nombre: "Porcion de Arepas",
         categoria: "bebidas",
         precio: 8000,
-        descripcion: "Frutas colombianas: Lulo, Maracuyá, Mango, Mora o Guanábana.",
-        imagen: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=500&q=80"
+        descripcion: "Arepas de maíz tierno a la plancha con abundante queso campesino derretido.",
+        imagen: "./assets/img/arepas.jpg"
     },
     {
         id: 7,
@@ -55,6 +55,13 @@ const productos = [
         precio: 14000,
         descripcion: "Porcion de chorizo al estilo de la abuela.",
         imagen: "./assets/img/chorizo.jpg"
+    },{
+        id: 8,
+        nombre: "Platano con queso y bocadillo",
+        categoria: "bebidas",
+        precio: 14000,
+        descripcion: "Platano maduro con queso y bocadillo de chorizo.",
+        imagen: "./assets/img/platanosqb.jpg"
     },
 ];
 
