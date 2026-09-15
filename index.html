@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacienda Atahualpa </title>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="./assets/styles.css">
+    <!-- Font Awesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navegación -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="brand-logo">
+                <img src="./assets/img/logo.ata.png" alt="Logo Hacienda Atahualpa" class="logo-img">
+            </a>
+            <button class="menu-toggle" id="mobile-menu" aria-label="Abrir Menú">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#hero">Inicio</a></li>
+                    <li><a href="#nosotros">Quiénes Somos</a></li>
+                    <li><a href="#menu">Menú</a></li>
+                    <li><a href="#reservas">Reservas</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon-wrapper" id="open-cart">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Principal / Hero -->
+    <section id="hero" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content reveal-fade-up">
+            <span class="tagline">Desde 1999 ofreciendo lo mejor</span>
+            <h1>Sabor Criollo & Tradición Colombiana</h1>
+            <p>Disfruta de la auténtica gastronomía de nuestra tierra con ingredientes frescos y la sazón de la abuela.</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary"><i class="fa-solid fa-utensils"></i> Ver Menú</a>
+                <a href="#reservas" class="btn btn-secondary"><i class="fa-solid fa-calendar-check"></i> Reservar Mesa</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Quiénes Somos -->
+    <section id="nosotros" class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text reveal-left">
+                    <span class="section-subtitle">Nuestra Historia</span>
+                    <h2>Bienvenidos a Hacienda Atahualpa</h2>
+                    <p>Desde 1999 nos hemos dedicado a rescatar los sabores tradicionales de los hogares colombianos. Nuestra "Chiva" gastronómica transporta a cada visitante por un viaje culinario lleno de color, sazón y la calidez característica de nuestra gente.</p>
+                    <p>Cada plato es preparado con amor, respetando las recetas tradicionales pasadas de generación en generación. ¡Ven y vive una experiencia criolla inigualable!</p>
+                    
+                   
+                </div>
+                <div class="about-image reveal-right">
+                    <div class="image-frame">
+                        <img src="./assets/img/logo.ata.png" alt="Atahualpa Logo Tradición">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Menú Interactiva -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <div class="section-header text-center reveal-fade-up">
+                <span class="section-subtitle">Deleita tu Paladar</span>
+                <h2>Nuestro Menú Criollo</h2>
+                <p>Selecciona tus platos favoritos y añádelos al carrito para ordenar.</p>
+            </div>
+
+            <!-- Filtros de categoría -->
+            <div class="category-filters reveal-fade-up">
+                <button class="filter-btn active" data-category="todos">Todos</button>
+                <button class="filter-btn" data-category="fuertes">Bandejas Especiales</button>
+                <button class="filter-btn" data-category="entradas">Sopas</button>
+                <button class="filter-btn" data-category="bebidas">Porciones</button>
+            </div>
+
+            <!-- Grid de Platos -->
+            <div class="products-grid" id="products-container">
+                <!-- Se renderizan dinámicamente con JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Reservas / Formspree Integrado -->
+    <section id="reservas" class="reservation-section">
+        <div class="container">
+            <div class="reservation-box">
+                <div class="reservation-info reveal-left">
+                    <h2>Reserva tu Mesa</h2>
+                    <p>Asegura un lugar en nuestra hacienda para celebrar tus momentos especiales o disfrutar de un almuerzo en familia.</p>
+                    <ul class="info-list">
+                        <li><i class="fa-solid fa-location-dot"></i> Bogotá - Usme </li>
+                        <li><i class="fa-solid fa-phone"></i> 3112374358</li>
+                        <li><i class="fa-solid fa-clock"></i> Sábado - Domingo: 10:30 AM - 6:00 PM</li>
+                    </ul>
+                </div>
+
+               <!-- Formulario Formspree -->
+<form class="reservation-form reveal-right" id="booking-form" action="https://formspree.io/f/xkjnlbdw" method="POST">
+    <h3>Formulario de Reserva</h3>
+    <div class="form-group">
+        <label for="nombre"><i class="fa-solid fa-user"></i> Nombre Completo</label>
+        <input type="text" name="nombre" id="nombre" required placeholder="Ej. Juan Pérez">
+    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label for="email"><i class="fa-solid fa-envelope"></i> Correo Electrónico</label>
+            <input type="email" name="email" id="email" required placeholder="correo@ejemplo.com">
+        </div>
+        <div class="form-group">
+            <label for="telefono"><i class="fa-solid fa-phone"></i> Teléfono</label>
+            <input type="tel" name="telefono" id="telefono" required placeholder="3001234567">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label for="personas"><i class="fa-solid fa-users"></i> Personas</label>
+            <input type="number" name="personas" id="personas" min="1" max="20" value="2" required>
+        </div>
+        <div class="form-group">
+            <label for="fecha"><i class="fa-solid fa-calendar"></i> Fecha</label>
+            <input type="date" name="fecha" id="fecha" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="hora"><i class="fa-solid fa-clock"></i> Hora</label>
+        <input type="time" name="hora" id="hora" required>
+    </div>
+    <div class="form-group">
+        <label for="notas"><i class="fa-solid fa-comment"></i> Notas Especiales</label>
+        <textarea name="notas" id="notas" rows="3" placeholder="Celebración de cumpleaños, mesa exterior..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block" id="submit-btn">
+        <i class="fa-solid fa-paper-plane"></i> Enviar Reserva
+    </button>
+</form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Redes Sociales y Contacto -->
+    <footer id="contacto" class="footer-section">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand reveal-fade-up">
+                    <img src="./assets/img/logo.ata.png" alt="Atahualpa Logo" class="footer-logo">
+                    <p>Sabor tradicional colombiano en un ambiente campesino único. ¡Te esperamos con los brazos abiertos!</p>
+                </div>
+                <div class="footer-links reveal-fade-up">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="#hero">Inicio</a></li>
+                        <li><a href="#nosotros">Quiénes Somos</a></li>
+                        <li><a href="#menu">Menú</a></li>
+                        <li><a href="#reservas">Reservas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social reveal-fade-up">
+                    <h4>Síguenos en Redes</h4>
+                    <p>Comparte tus fotos utilizando el hashtag <strong>#HaciendaAtahualpa</strong></p>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/share/1EF1JWQSWU/" target="_blank" class="social-btn facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/granja.atahualpa?igsh=b2ZndHNyaHN3cTk0" target="_blank" class="social-btn instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@granja_atahualpa?_r=1&_t=ZS-98ZoUp5pVFH" target="_blank" class="social-btn tiktok"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="https://wa.me/573001234567" target="_blank" class="social-btn whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p> Hacienda Atahualpa </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Slide Bar Carrito de Compras -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <aside class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3><i class="fa-solid fa-cart-shopping"></i> Tu Pedido</h3>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-body" id="cart-items-container">
+            <!-- Items del carrito -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total:</span>
+                <span id="cart-total">$0 COP</span>
+            </div>
+            <button class="btn btn-primary btn-block" id="checkout-btn"><i class="fa-brands fa-whatsapp"></i> Enviar Pedido por WhatsApp</button>
+        </div>
+    </aside>
+
+    <!-- Modal Notificación Reserva -->
+    <div class="modal" id="modal-reservation">
+        <div class="modal-content">
+            <i class="fa-solid fa-circle-check modal-icon"></i>
+            <h3>¡Reserva Enviada Exitosamente!</h3>
+            <p id="reservation-message"></p>
+            <button class="btn btn-primary" id="close-modal">Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Script JS -->
+    <script src="./assets/script.js"></script>
+</body>
+</html>
