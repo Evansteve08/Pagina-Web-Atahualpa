@@ -18,7 +18,7 @@ const productos = [
     },
     {
         id: 3,
-        nombre: "Parrilada",
+        nombre: "Parrillada",
         categoria: "fuertes",
         precio: 35000,
         descripcion: "Parrillada de carnes con papa criolla, yuca frita, ensalada y arepa.",
@@ -42,7 +42,7 @@ const productos = [
     },
     {
         id: 6,
-        nombre: "Porcion de Arepas",
+        nombre: "Porción de Arepas",
         categoria: "bebidas",
         precio: 8000,
         descripcion: "Arepas de maíz tierno a la plancha con abundante queso campesino derretido.",
@@ -50,17 +50,17 @@ const productos = [
     },
     {
         id: 7,
-        nombre: "Porcion Chorizo",
+        nombre: "Porción Chorizo",
         categoria: "bebidas",
         precio: 14000,
-        descripcion: "Porcion de chorizo al estilo de la abuela.",
+        descripcion: "Porción de chorizo al estilo de la abuela.",
         imagen: "./assets/img/chorizo.jpg"
     },{
         id: 8,
-        nombre: "Platano con queso y bocadillo",
+        nombre: "Plátano con queso y bocadillo",
         categoria: "bebidas",
         precio: 14000,
-        descripcion: "Platano maduro con queso y bocadillo de chorizo.",
+        descripcion: "Plátano maduro con queso y bocadillo de chorizo.",
         imagen: "./assets/img/platanosqb.jpg"
     },
 ];
