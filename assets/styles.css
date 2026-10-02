@@ -794,4 +794,13 @@ h1, h2, h3, h4 {
     .hero-content h1 { font-size: 2.2rem; }
     .about-grid, .reservation-box, .footer-grid { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
+
+    /* Estilo del Mapa en la Caja de Reservas */
+.map-container {
+    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border: 2px solid var(--accent);
+}
 }
