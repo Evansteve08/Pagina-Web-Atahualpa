@@ -4,7 +4,7 @@ const productos = [
         id: 1,
         nombre: "Picada Familiar",
         categoria: "fuertes",
-        precio: 38000,
+        precio: 198000,
         descripcion: "Frijoles, arroz, chicharrón crujiente, carne molida, chorizo, huevo frito, tajada de plátano y arepa.",
         imagen: "./assets/img/picada-f.jpg"
     },
@@ -12,7 +12,7 @@ const productos = [
         id: 2,
         nombre: "Mojarra Frita",
         categoria: "fuertes",
-        precio: 32000,
+        precio: 35000,
         descripcion: "Mojarra frita acompañada de arroz, ensalada, tajadas de plátano y arepa.",
         imagen: "./assets/img/mojarra.jpg"
     },
@@ -28,7 +28,7 @@ const productos = [
         id: 4,
         nombre: "Sopa Sancocho",
         categoria: "entradas",
-        precio: 15000,
+        precio: 10000,
         descripcion: "Empanadas de masa de maíz crujiente rellenas de carne desmechada y papa criolla. Acompañadas con ají.",
         imagen: "./assets/img/sopa-sancocho.jpeg"
     },
@@ -36,30 +36,30 @@ const productos = [
         id: 5,
         nombre: "Sancocho Especial",
         categoria: "entradas",
-        precio: 12000,
+        precio: 39000,
         descripcion: "Dulce arepa de maíz tierno a la plancha con abundante queso campesino derretido.",
         imagen: "./assets/img/sancocho-esp.jpeg"
     },
     {
         id: 6,
         nombre: "Porción de Arepas",
-        categoria: "bebidas",
-        precio: 8000,
+        categoria: "porciones",
+        precio: 4000,
         descripcion: "Arepas de maíz tierno a la plancha con abundante queso campesino derretido.",
         imagen: "./assets/img/arepas.jpg"
     },
     {
         id: 7,
         nombre: "Porción Chorizo",
-        categoria: "bebidas",
-        precio: 14000,
+        categoria: "porciones",
+        precio: 11000,
         descripcion: "Porción de chorizo al estilo de la abuela.",
         imagen: "./assets/img/chorizo.jpg"
     },{
         id: 8,
         nombre: "Plátano con queso y bocadillo",
-        categoria: "bebidas",
-        precio: 14000,
+        categoria: "porciones",
+        precio: 10000,
         descripcion: "Plátano maduro con queso y bocadillo de chorizo.",
         imagen: "./assets/img/platanosqb.jpg"
     },
