@@ -318,4 +318,71 @@ async function procesarReservaFormspree(e) {
         btn.innerHTML = originalText;
         btn.disabled = false;
     }
+
+
+    // ==========================================
+// CONFIGURACIÓN DE SUPABASE (Poner arriba en script.js)
+// ==========================================
+const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
+const SUPABASE_ANON_KEY = 'TU-LLAVE-ANON-PUBLIC';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ==========================================
+// ENVÍO DOBLE: SUPABASE + FORMSPREE
+// ==========================================
+async function procesarReservaFormspree(e) {
+    e.preventDefault();
+
+    // 1. Capturamos los datos del formulario
+    const nombre = document.getElementById('nombre').value;
+    const email = document.getElementById('email').value;
+    const telefono = document.getElementById('telefono').value;
+    const personas = parseInt(document.getElementById('personas').value);
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
+    const notas = document.getElementById('notas').value;
+
+    const btn = document.getElementById('submit-btn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+    btn.disabled = true;
+
+    const formData = new FormData(bookingForm);
+
+    try {
+        // 2. Ejecutamos ambos envíos en paralelo (Supabase y Formspree)
+        const [supabaseResponse, formspreeResponse] = await Promise.all([
+            // Envío 1: Guardar en base de datos Supabase
+            supabaseClient.from('reservas').insert([
+                { nombre, email, telefono, personas, fecha, hora, notas }
+            ]),
+            // Envío 2: Notificar por correo vía Formspree
+            fetch(bookingForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            })
+        ]);
+
+        // Verificamos si alguno de los dos falló
+        if (supabaseResponse.error) {
+            throw new Error('Error en Supabase: ' + supabaseResponse.error.message);
+        }
+        if (!formspreeResponse.ok) {
+            throw new Error('Error en Formspree');
+        }
+
+        // 3. Si ambos tuvieron éxito, mostramos tu modal y limpiamos
+        reservationMsg.innerHTML = `Muchas gracias <strong>${nombre}</strong>. Hemos recibido tu reserva para <strong>${personas} personas</strong> el día <strong>${fecha}</strong> a las <strong>${hora}</strong>. Te llegará una notificación de confirmación al correo.`;
+        modalReservation.classList.add('active');
+        bookingForm.reset();
+
+    } catch (error) {
+        console.error(error);
+        alert("Hubo un problema al procesar tu reserva. Por favor intenta de nuevo.");
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
 }
