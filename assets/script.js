@@ -421,24 +421,39 @@ async function procesarReserva(e) {
     const formData = new FormData(bookingForm);
 
     try {
-        const [supabaseResponse, formspreeResponse] = await Promise.all([
-            supabaseClient.from('reservas').insert([{ nombre, email, telefono, personas, fecha, hora, notas }]),
-            fetch(bookingForm.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
-        ]);
+        // 1. Guardar en Supabase
+        const { error: supabaseError } = await supabaseClient
+            .from('reservas')
+            .insert([{ nombre, email, telefono, personas, fecha, hora, notas }]);
 
-        if (supabaseResponse.error) throw new Error(supabaseResponse.error.message);
-        if (!formspreeResponse.ok) throw new Error('Error en Formspree');
+        if (supabaseError) {
+            throw new Error('Error al guardar en Supabase: ' + supabaseError.message);
+        }
+
+        // 2. Enviar correo con Formspree
+        const formspreeResponse = await fetch(bookingForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        });
+
+        if (!formspreeResponse.ok) {
+            throw new Error('Formspree rechazó el envío (revisa el enlace action en index.html)');
+        }
 
         reservationMsg.innerHTML = `Muchas gracias <strong>${nombre}</strong>. Hemos recibido tu reserva para <strong>${personas} personas</strong> el día <strong>${fecha}</strong> a las <strong>${hora}</strong>. Te llegará una notificación de confirmación al correo.`;
         modalReservation.classList.add('active');
         bookingForm.reset();
+
     } catch (error) {
         console.error(error);
-        alert("Hubo un problema al procesar tu reserva. Por favor intenta de nuevo.");
+        alert("⚠️ " + error.message);
     } finally {
         btn.innerHTML = originalText;
         btn.disabled = false;
     }
+}  
+{
 
 
     // ==========================================
