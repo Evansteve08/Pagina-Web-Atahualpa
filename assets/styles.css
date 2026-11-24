@@ -938,5 +938,47 @@ h1, h2, h3, h4 {
 @media (max-width: 600px) {
     .admin-form-grid { grid-template-columns: 1fr; }
 }
+.footer-bottom p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.footer-bottom a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-bottom a:hover {
+    text-decoration: underline;
+}
+
+.footer-separator {
+    color: #555;
+    margin: 0 4px;
+}
+
+.admin-footer-link {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.admin-footer-link:hover {
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.05);
+}
 
 }

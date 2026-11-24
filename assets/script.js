@@ -1,7 +1,7 @@
 // ==========================================
 // CONFIGURACIÓN DE SUPABASE
 // ==========================================
-const SUPABASE_URL = 'https://motlsamrilejevobaxki.supabase.co/rest/v1/';
+const SUPABASE_URL = 'https://motlsamrilejevobaxki.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_4ZAdMKh80n29lqjGQPOKDA_it_KPF9c';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -277,16 +277,37 @@ async function verificarSesionAdmin() {
         modalAdminLogin.classList.add('active');
     }
 }
-
 async function iniciarSesionAdmin(e) {
     e.preventDefault();
-    const email = document.getElementById('admin-email').value;
+    const email = document.getElementById('admin-email').value.trim();
     const password = document.getElementById('admin-password').value;
+    const submitBtn = adminLoginForm.querySelector('button[type="submit"]');
 
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    // Verificar si aún no se han puesto las llaves de Supabase
+    if (SUPABASE_URL.includes('TU-PROYECTO') || SUPABASE_ANON_KEY.includes('TU-LLAVE')) {
+        alert("⚠️ Aún no has pegado tu SUPABASE_URL y SUPABASE_ANON_KEY en las primeras líneas de script.js.");
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Verificando...";
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Ingresar";
 
     if (error) {
-        alert("Acceso denegado: Correo o contraseña incorrectos.");
+        if (error.message.includes("Email not confirmed")) {
+            alert("⚠️ Tu usuario existe en Supabase, pero falta confirmarlo. Ve a Authentication > Users > tres puntos (...) > Confirm user.");
+        } else if (error.message.includes("Invalid login credentials")) {
+            alert("❌ Correo o contraseña incorrectos. Verifica en Supabase > Authentication > Users que el correo sea exacto y la contraseña tenga mínimo 6 caracteres.");
+        } else {
+            alert("❌ Error de Supabase: " + error.message);
+        }
     } else {
         adminLoginForm.reset();
         modalAdminLogin.classList.remove('active');
@@ -294,6 +315,7 @@ async function iniciarSesionAdmin(e) {
         modalAdminPanel.classList.add('active');
     }
 }
+
 
 async function cerrarSesionAdmin() {
     await supabaseClient.auth.signOut();
