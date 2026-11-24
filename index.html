@@ -184,11 +184,16 @@
                         
                     </div>
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <p>Hecho por <a href="https://evansteve08.github.io/Portafolio/#projects" target="_blank">Evan Steve</a> Todos los derechos reservados.</p>
+           <div class="footer-bottom">
+                <p>Hecho por <a href="https://evansteve08.github.io/Portafolio/#projects" target="_blank">Evan Steve</a> Todos los derechos reservados. 
+                <button id="open-admin-btn" class="admin-trigger-btn" title="Acceso Administrador">
+                    <i class="fa-solid fa-lock"></i> Admin
+                </button></p>
             </div>
                 </div>
+
+
+                
     </footer>
 
     <!-- Slide Bar Carrito de Compras -->
@@ -202,10 +207,19 @@
             <!-- Items del carrito -->
         </div>
         <div class="cart-footer">
+            <div class="cart-footer">
+            <div class="form-group" style="margin-bottom: 12px;">
+                <input type="text" id="cart-customer-name" placeholder="Tu nombre (Ej. Carlos Ruiz)" style="margin-bottom: 8px;">
+                <input type="text" id="cart-address" placeholder="Dirección de entrega o 'Recoger en Hacienda'">
+            </div>
             <div class="cart-total-row">
                 <span>Total:</span>
                 <span id="cart-total">$0 COP</span>
             </div>
+            <button class="btn btn-primary btn-block" id="checkout-btn" style="background-color: #25d366;">
+                <i class="fa-brands fa-whatsapp"></i> Pedir por WhatsApp
+            </button>
+        </div>
             
         </div>
     </aside>
@@ -220,7 +234,90 @@
         </div>
     </div>
 
+    <!-- Modal Login Administrador -->
+    <div class="modal" id="modal-admin-login">
+        <div class="modal-content admin-modal">
+            <button class="close-modal-x" id="close-login-modal">&times;</button>
+            <i class="fa-solid fa-user-shield modal-icon"></i>
+            <h3>Acceso Administrador</h3>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">Ingresa tus credenciales para gestionar el menú</p>
+            <form id="admin-login-form">
+                <div class="form-group text-left">
+                    <label>Correo Administrador</label>
+                    <input type="email" id="admin-email" required placeholder="admin@atahualpa.com">
+                </div>
+                <div class="form-group text-left">
+                    <label>Contraseña</label>
+                    <input type="password" id="admin-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Panel de Control (CRUD Productos) -->
+    <div class="modal" id="modal-admin-panel">
+        <div class="modal-content admin-panel-content">
+            <div class="admin-panel-header">
+                <h3><i class="fa-solid fa-utensils"></i> Gestión del Menú Criollo</h3>
+                <div>
+                    <button class="btn btn-secondary btn-sm" id="logout-admin-btn"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+                    <button class="close-modal-x" id="close-panel-modal">&times;</button>
+                </div>
+            </div>
+
+            <!-- Formulario Agregar / Editar Plato -->
+            <form id="product-form" class="admin-form-grid">
+                <input type="hidden" id="prod-id">
+                <div class="form-group">
+                    <label>Nombre del Plato</label>
+                    <input type="text" id="prod-nombre" required placeholder="Ej. Bandeja Paisa">
+                </div>
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="prod-categoria" required>
+                        <option value="fuertes">Bandejas Especiales</option>
+                        <option value="entradas">Sopas</option>
+                        <option value="porciones">Porciones</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Precio (COP sin puntos)</label>
+                    <input type="number" id="prod-precio" required placeholder="35000">
+                </div>
+                <div class="form-group">
+                    <label>Ruta o URL de Imagen</label>
+                    <input type="text" id="prod-imagen" required placeholder="./assets/img/plato.jpg">
+                </div>
+                <div class="form-group full-width">
+                    <label>Descripción</label>
+                    <textarea id="prod-descripcion" rows="2" required placeholder="Ingredientes y acompañamientos..."></textarea>
+                </div>
+                <div class="full-width" style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" id="save-prod-btn">
+                        <i class="fa-solid fa-floppy-disk"></i> Guardar Plato
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancel-edit-btn" style="display:none;">
+                        Cancelar Edición
+                    </button>
+                </div>
+            </form>
+
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+            <!-- Lista de platos actuales para editar/eliminar -->
+            <h4>Platos Actuales en Carta</h4>
+            <div class="admin-products-list" id="admin-products-list">
+                <!-- Se llena con JS -->
+            </div>
+        </div>
+    </div>
+
     <!-- Script JS -->
+     
+   <!-- Librería de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./assets/script.js"></script>
 </body>
+</html>
 </html>

@@ -1,72 +1,24 @@
-// Base de datos de productos (Menú Criollo Colombiano)
-const productos = [
-    {
-        id: 1,
-        nombre: "Picada Familiar",
-        categoria: "fuertes",
-        precio: 198000,
-        descripcion: "Frijoles, arroz, chicharrón crujiente, carne molida, chorizo, huevo frito, tajada de plátano y arepa.",
-        imagen: "./assets/img/picada-f.jpg"
-    },
-    {
-        id: 2,
-        nombre: "Mojarra Frita",
-        categoria: "fuertes",
-        precio: 35000,
-        descripcion: "Mojarra frita acompañada de arroz, ensalada, tajadas de plátano y arepa.",
-        imagen: "./assets/img/mojarra.jpg"
-    },
-    {
-        id: 3,
-        nombre: "Parrillada",
-        categoria: "fuertes",
-        precio: 35000,
-        descripcion: "Parrillada de carnes con papa criolla, yuca frita, ensalada y arepa.",
-        imagen: "./assets/img/parrilada.jpeg"
-    },
-    {
-        id: 4,
-        nombre: "Sopa Sancocho",
-        categoria: "entradas",
-        precio: 10000,
-        descripcion: "Empanadas de masa de maíz crujiente rellenas de carne desmechada y papa criolla. Acompañadas con ají.",
-        imagen: "./assets/img/sopa-sancocho.jpeg"
-    },
-    {
-        id: 5,
-        nombre: "Sancocho Especial",
-        categoria: "entradas",
-        precio: 39000,
-        descripcion: "Dulce arepa de maíz tierno a la plancha con abundante queso campesino derretido.",
-        imagen: "./assets/img/sancocho-esp.jpeg"
-    },
-    {
-        id: 6,
-        nombre: "Porción de Arepas",
-        categoria: "porciones",
-        precio: 4000,
-        descripcion: "Arepas de maíz tierno a la plancha con abundante queso campesino derretido.",
-        imagen: "./assets/img/arepas.jpg"
-    },
-    {
-        id: 7,
-        nombre: "Porción Chorizo",
-        categoria: "porciones",
-        precio: 11000,
-        descripcion: "Porción de chorizo al estilo de la abuela.",
-        imagen: "./assets/img/chorizo.jpg"
-    },{
-        id: 8,
-        nombre: "Plátano con queso y bocadillo",
-        categoria: "porciones",
-        precio: 10000,
-        descripcion: "Plátano maduro con queso y bocadillo de chorizo.",
-        imagen: "./assets/img/platanosqb.jpg"
-    },
+// ==========================================
+// CONFIGURACIÓN DE SUPABASE
+// ==========================================
+const SUPABASE_URL = 'https://motlsamrilejevobaxki.supabase.co/rest/v1/';
+const SUPABASE_ANON_KEY = 'sb_publishable_4ZAdMKh80n29lqjGQPOKDA_it_KPF9c';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Respaldo local por si aún no cargas los datos en Supabase
+const productosRespaldo = [
+    { id: 1, nombre: "Picada Familiar", categoria: "fuertes", precio: 198000, descripcion: "Frijoles, arroz, chicharrón crujiente, carne molida, chorizo, huevo frito, tajada de plátano y arepa.", imagen: "./assets/img/picada-f.jpg" },
+    { id: 2, nombre: "Mojarra Frita", categoria: "fuertes", precio: 35000, descripcion: "Mojarra frita acompañada de arroz, ensalada, tajadas de plátano y arepa.", imagen: "./assets/img/mojarra.jpg" },
+    { id: 3, nombre: "Parrillada", categoria: "fuertes", precio: 35000, descripcion: "Parrillada de carnes con papa criolla, yuca frita, ensalada y arepa.", imagen: "./assets/img/parrilada.jpeg" },
+    { id: 4, nombre: "Sopa Sancocho", categoria: "entradas", precio: 10000, descripcion: "Sopa tradicional de sancocho criollo con ingredientes frescos de la granja.", imagen: "./assets/img/sopa-sancocho.jpeg" },
+    { id: 5, nombre: "Sancocho Especial", categoria: "entradas", precio: 39000, descripcion: "Sancocho completo con presa seleccionada, mazorca, yuca, plátano, arroz y aguacate.", imagen: "./assets/img/sancocho-esp.jpeg" },
+    { id: 6, nombre: "Porción de Arepas", categoria: "porciones", precio: 4000, descripcion: "Arepas de maíz tierno a la plancha con abundante queso campesino derretido.", imagen: "./assets/img/arepas.jpg" },
+    { id: 7, nombre: "Porción Chorizo", categoria: "porciones", precio: 11000, descripcion: "Porción de chorizo al estilo de la abuela.", imagen: "./assets/img/chorizo.jpg" },
+    { id: 8, nombre: "Plátano con queso y bocadillo", categoria: "porciones", precio: 10000, descripcion: "Plátano maduro con queso y bocadillo.", imagen: "./assets/img/platanosqb.jpg" }
 ];
 
-// Estado del Carrito
-let carrito = [];
+let productos = [];
+let carrito = JSON.parse(localStorage.getItem('atahualpa_cart')) || [];
 
 // Elementos DOM
 const productsContainer = document.getElementById('products-container');
@@ -86,27 +38,70 @@ const reservationMsg = document.getElementById('reservation-message');
 const mobileMenuBtn = document.getElementById('mobile-menu');
 const navMenu = document.querySelector('.nav-menu');
 
-// Inicialización
-document.addEventListener('DOMContentLoaded', () => {
-    renderProducts(productos);
+// Elementos Admin
+const openAdminBtn = document.getElementById('open-admin-btn');
+const modalAdminLogin = document.getElementById('modal-admin-login');
+const closeLoginModal = document.getElementById('close-login-modal');
+const adminLoginForm = document.getElementById('admin-login-form');
+const modalAdminPanel = document.getElementById('modal-admin-panel');
+const closePanelModal = document.getElementById('close-panel-modal');
+const logoutAdminBtn = document.getElementById('logout-admin-btn');
+const productForm = document.getElementById('product-form');
+const adminProductsList = document.getElementById('admin-products-list');
+const cancelEditBtn = document.getElementById('cancel-edit-btn');
+
+// ==========================================
+// INICIALIZACIÓN Y CARGA DE MENÚ
+// ==========================================
+document.addEventListener('DOMContentLoaded', async () => {
+    await cargarProductos();
+    actualizarCarrito();
     setupEventListeners();
     initScrollAnimations();
 });
 
-// Renderizar Productos en el Menú con animaciones reveal
+async function cargarProductos() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('productos')
+            .select('*')
+            .order('id', { ascending: true });
+
+        if (error || !data || data.length === 0) {
+            productos = productosRespaldo;
+        } else {
+            productos = data;
+        }
+    } catch (e) {
+        productos = productosRespaldo;
+    }
+
+    const activeFilter = document.querySelector('.filter-btn.active')?.dataset.category || 'todos';
+    filtrarYRenderizar(activeFilter);
+    renderAdminList();
+}
+
+function filtrarYRenderizar(category) {
+    if (category === 'todos') {
+        renderProducts(productos);
+    } else {
+        renderProducts(productos.filter(p => p.categoria === category));
+    }
+}
+
 function renderProducts(items) {
     productsContainer.innerHTML = '';
     items.forEach((prod, index) => {
         const card = document.createElement('div');
         card.classList.add('product-card', 'reveal-zoom');
-        card.style.transitionDelay = `${(index % 4) * 0.1}s`; // Efecto cascada
+        card.style.transitionDelay = `${(index % 4) * 0.1}s`;
         card.innerHTML = `
             <img src="${prod.imagen}" alt="${prod.nombre}" class="product-img">
             <div class="product-info">
                 <h3 class="product-title">${prod.nombre}</h3>
                 <p class="product-desc">${prod.descripcion}</p>
                 <div class="product-bottom">
-                    <span class="product-price">$${prod.precio.toLocaleString('es-CO')}</span>
+                    <span class="product-price">$${Number(prod.precio).toLocaleString('es-CO')}</span>
                     <button class="add-cart-btn" onclick="agregarAlCarrito(${prod.id})">
                         <i class="fa-solid fa-plus"></i> Agregar
                     </button>
@@ -115,78 +110,68 @@ function renderProducts(items) {
         `;
         productsContainer.appendChild(card);
     });
-    // Volver a vincular los observadores para los nuevos elementos agregados
     initScrollAnimations();
 }
 
 // ==========================================
-// ANIMACIONES SCROLL REVEAL (Intersection Observer)
+// ANIMACIONES SCROLL REVEAL
 // ==========================================
 function initScrollAnimations() {
     const revealElements = document.querySelectorAll('.reveal-fade-up, .reveal-left, .reveal-right, .reveal-zoom');
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('active');
         });
-    }, {
-        threshold: 0.15 // Se activa cuando el 15% del elemento es visible
-    });
-
+    }, { threshold: 0.15 });
     revealElements.forEach(el => observer.observe(el));
 }
 
-// Configurar Event Listeners
+// ==========================================
+// EVENT LISTENERS
+// ==========================================
 function setupEventListeners() {
-    // Menú móvil toggle
-    mobileMenuBtn.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-    });
-
-    // Cerrar menú móvil al hacer clic en un enlace
+    mobileMenuBtn.addEventListener('click', () => navMenu.classList.toggle('active'));
     document.querySelectorAll('.nav-menu a').forEach(link => {
         link.addEventListener('click', () => navMenu.classList.remove('active'));
     });
 
-    // Filtros de categoría
     filterBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             filterBtns.forEach(b => b.classList.remove('active'));
             e.target.classList.add('active');
-            
-            const category = e.target.dataset.category;
-            if (category === 'todos') {
-                renderProducts(productos);
-            } else {
-                const filtrados = productos.filter(p => p.categoria === category);
-                renderProducts(filtrados);
-            }
+            filtrarYRenderizar(e.target.dataset.category);
         });
     });
 
-    // Abrir/Cerrar Carrito
     cartIconWrapper.addEventListener('click', toggleCart);
     closeCartBtn.addEventListener('click', toggleCart);
     cartOverlay.addEventListener('click', toggleCart);
-
-    // Envío por WhatsApp
     checkoutBtn.addEventListener('click', procesarPedidoWhatsApp);
 
-    // Formulario de Reserva con Formspree vía AJAX
-    bookingForm.addEventListener('submit', procesarReservaFormspree);
+    bookingForm.addEventListener('submit', procesarReserva);
     closeModalBtn.addEventListener('click', () => modalReservation.classList.remove('active'));
+
+    // Eventos Administrador
+    openAdminBtn.addEventListener('click', verificarSesionAdmin);
+    closeLoginModal.addEventListener('click', () => modalAdminLogin.classList.remove('active'));
+    closePanelModal.addEventListener('click', () => modalAdminPanel.classList.remove('active'));
+    adminLoginForm.addEventListener('submit', iniciarSesionAdmin);
+    logoutAdminBtn.addEventListener('click', cerrarSesionAdmin);
+    productForm.addEventListener('submit', guardarProductoAdmin);
+    cancelEditBtn.addEventListener('click', resetFormularioAdmin);
 }
 
+// ==========================================
+// CARRITO DE COMPRAS Y WHATSAPP
+// ==========================================
 function toggleCart() {
     cartSidebar.classList.toggle('active');
     cartOverlay.classList.toggle('active');
 }
 
-// Funciones del Carrito
 window.agregarAlCarrito = function(id) {
     const producto = productos.find(p => p.id === id);
+    if (!producto) return;
     const itemEnCarrito = carrito.find(item => item.id === id);
 
     if (itemEnCarrito) {
@@ -200,23 +185,22 @@ window.agregarAlCarrito = function(id) {
     cartOverlay.classList.add('active');
 };
 
-function cambiarCantidad(id, delta) {
+window.cambiarCantidad = function(id, delta) {
     const item = carrito.find(p => p.id === id);
     if (item) {
         item.cantidad += delta;
-        if (item.cantidad <= 0) {
-            carrito = carrito.filter(p => p.id !== id);
-        }
+        if (item.cantidad <= 0) carrito = carrito.filter(p => p.id !== id);
     }
     actualizarCarrito();
-}
+};
 
-function eliminarDelCarrito(id) {
+window.eliminarDelCarrito = function(id) {
     carrito = carrito.filter(p => p.id !== id);
     actualizarCarrito();
-}
+};
 
 function actualizarCarrito() {
+    localStorage.setItem('atahualpa_cart', JSON.stringify(carrito));
     cartItemsContainer.innerHTML = '';
     let total = 0;
     let totalCount = 0;
@@ -252,16 +236,20 @@ function actualizarCarrito() {
     cartCountElement.textContent = totalCount;
 }
 
-// Procesar pedido enviándolo a WhatsApp
 function procesarPedidoWhatsApp() {
     if (carrito.length === 0) {
         alert("Tu carrito está vacío. Agrega platos antes de realizar el pedido.");
         return;
     }
 
-    let mensaje = "¡Hola Hacienda Atahualpa! Quisiera realizar el siguiente pedido:\n\n";
-    let total = 0;
+    const cliente = document.getElementById('cart-customer-name').value.trim();
+    const direccion = document.getElementById('cart-address').value.trim();
 
+    let mensaje = "¡Hola *Hacienda Atahualpa*! 🤠 Quisiera realizar el siguiente pedido:\n\n";
+    if (cliente) mensaje += `*Cliente:* ${cliente}\n`;
+    if (direccion) mensaje += `*Entrega:* ${direccion}\n\n`;
+
+    let total = 0;
     carrito.forEach(item => {
         const subtotal = item.precio * item.cantidad;
         total += subtotal;
@@ -271,49 +259,160 @@ function procesarPedidoWhatsApp() {
     mensaje += `\n*Total a Pagar:* $${total.toLocaleString('es-CO')} COP\n`;
     mensaje += "¡Quedo atento a la confirmación de mi pedido!";
 
-    const telefono = "573001234567";
+    // Número oficial de Hacienda Atahualpa (Bogotá - Usme)
+    const telefono = "573115357877";
     const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
 }
 
-// INTEGRACIÓN FORMSPREE CON AJAX (Para no recargar la página)
-async function procesarReservaFormspree(e) {
-    e.preventDefault();
+// ==========================================
+// PANEL DE ADMINISTRADOR (SUPABASE AUTH + CRUD)
+// ==========================================
+async function verificarSesionAdmin() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+        renderAdminList();
+        modalAdminPanel.classList.add('active');
+    } else {
+        modalAdminLogin.classList.add('active');
+    }
+}
 
-    // 1. Capturamos los valores ANTES de enviar o limpiar el formulario
+async function iniciarSesionAdmin(e) {
+    e.preventDefault();
+    const email = document.getElementById('admin-email').value;
+    const password = document.getElementById('admin-password').value;
+
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+    if (error) {
+        alert("Acceso denegado: Correo o contraseña incorrectos.");
+    } else {
+        adminLoginForm.reset();
+        modalAdminLogin.classList.remove('active');
+        renderAdminList();
+        modalAdminPanel.classList.add('active');
+    }
+}
+
+async function cerrarSesionAdmin() {
+    await supabaseClient.auth.signOut();
+    modalAdminPanel.classList.remove('active');
+}
+
+function renderAdminList() {
+    if (!adminProductsList) return;
+    adminProductsList.innerHTML = '';
+    productos.forEach(prod => {
+        const row = document.createElement('div');
+        row.classList.add('admin-prod-row');
+        row.innerHTML = `
+            <div>
+                <strong>${prod.nombre}</strong> 
+                <span class="badge-cat">${prod.categoria}</span><br>
+                <small>$${Number(prod.precio).toLocaleString('es-CO')} COP</small>
+            </div>
+            <div class="admin-row-actions">
+                <button class="btn-edit" onclick="editarProductoAdmin(${prod.id})" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-delete" onclick="eliminarProductoAdmin(${prod.id})" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        `;
+        adminProductsList.appendChild(row);
+    });
+}
+
+window.editarProductoAdmin = function(id) {
+    const prod = productos.find(p => p.id === id);
+    if (!prod) return;
+    document.getElementById('prod-id').value = prod.id;
+    document.getElementById('prod-nombre').value = prod.nombre;
+    document.getElementById('prod-categoria').value = prod.categoria;
+    document.getElementById('prod-precio').value = prod.precio;
+    document.getElementById('prod-imagen').value = prod.imagen;
+    document.getElementById('prod-descripcion').value = prod.descripcion;
+
+    document.getElementById('save-prod-btn').innerHTML = '<i class="fa-solid fa-check"></i> Actualizar Plato';
+    cancelEditBtn.style.display = 'inline-flex';
+};
+
+function resetFormularioAdmin() {
+    productForm.reset();
+    document.getElementById('prod-id').value = '';
+    document.getElementById('save-prod-btn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar Plato';
+    cancelEditBtn.style.display = 'none';
+}
+
+async function guardarProductoAdmin(e) {
+    e.preventDefault();
+    const id = document.getElementById('prod-id').value;
+    const payload = {
+        nombre: document.getElementById('prod-nombre').value,
+        categoria: document.getElementById('prod-categoria').value,
+        precio: parseInt(document.getElementById('prod-precio').value),
+        imagen: document.getElementById('prod-imagen').value,
+        descripcion: document.getElementById('prod-descripcion').value
+    };
+
+    let error;
+    if (id) {
+        ({ error } = await supabaseClient.from('productos').update(payload).eq('id', id));
+    } else {
+        ({ error } = await supabaseClient.from('productos').insert([payload]));
+    }
+
+    if (error) {
+        alert("Error al guardar: " + error.message);
+    } else {
+        resetFormularioAdmin();
+        await cargarProductos();
+    }
+}
+
+window.eliminarProductoAdmin = async function(id) {
+    if (!confirm("¿Seguro que deseas eliminar este plato del menú?")) return;
+    const { error } = await supabaseClient.from('productos').delete().eq('id', id);
+    if (error) {
+        alert("No se pudo eliminar: " + error.message);
+    } else {
+        await cargarProductos();
+    }
+};
+
+// ==========================================
+// RESERVAS (SUPABASE + FORMSPREE)
+// ==========================================
+async function procesarReserva(e) {
+    e.preventDefault();
     const nombre = document.getElementById('nombre').value;
-    const personas = document.getElementById('personas').value;
+    const email = document.getElementById('email').value;
+    const telefono = document.getElementById('telefono').value;
+    const personas = parseInt(document.getElementById('personas').value);
     const fecha = document.getElementById('fecha').value;
     const hora = document.getElementById('hora').value;
+    const notas = document.getElementById('notas').value;
 
     const btn = document.getElementById('submit-btn');
     const originalText = btn.innerHTML;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
     btn.disabled = true;
 
-    const data = new FormData(bookingForm);
-    
-    try {
-        const response = await fetch(bookingForm.action, {
-            method: 'POST',
-            body: data,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
+    const formData = new FormData(bookingForm);
 
-        if (response.ok) {
-            // 2. Armamos el mensaje de confirmación con los datos capturados
-            reservationMsg.innerHTML = `Muchas gracias <strong>${nombre}</strong>. Hemos recibido tu reserva para <strong>${personas} personas</strong> el día <strong>${fecha}</strong> a las <strong>${hora}</strong>. Te llegará una notificación de confirmación al correo.`;
-            modalReservation.classList.add('active');
-            
-            // 3. Ahora sí limpiamos el formulario
-            bookingForm.reset();
-        } else {
-            alert("Hubo un error al enviar la reserva. Asegúrate de configurar correctamente tu ID de Formspree.");
-        }
+    try {
+        const [supabaseResponse, formspreeResponse] = await Promise.all([
+            supabaseClient.from('reservas').insert([{ nombre, email, telefono, personas, fecha, hora, notas }]),
+            fetch(bookingForm.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
+        ]);
+
+        if (supabaseResponse.error) throw new Error(supabaseResponse.error.message);
+        if (!formspreeResponse.ok) throw new Error('Error en Formspree');
+
+        reservationMsg.innerHTML = `Muchas gracias <strong>${nombre}</strong>. Hemos recibido tu reserva para <strong>${personas} personas</strong> el día <strong>${fecha}</strong> a las <strong>${hora}</strong>. Te llegará una notificación de confirmación al correo.`;
+        modalReservation.classList.add('active');
+        bookingForm.reset();
     } catch (error) {
-        alert("Ocurrió un error de conexión al procesar el envío.");
+        console.error(error);
+        alert("Hubo un problema al procesar tu reserva. Por favor intenta de nuevo.");
     } finally {
         btn.innerHTML = originalText;
         btn.disabled = false;

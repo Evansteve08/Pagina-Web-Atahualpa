@@ -795,6 +795,148 @@ h1, h2, h3, h4 {
     .about-grid, .reservation-box, .footer-grid { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
 
-    /* Estilo del Mapa en la Caja de Reservas */
+    /* ==========================================
+   ESTILOS PANEL ADMINISTRADOR Y CARRITO EXTRA
+========================================== */
+.cart-footer input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.85rem;
+}
+
+.admin-trigger-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #888;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: var(--transition);
+}
+
+.admin-trigger-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.text-left { text-align: left; }
+
+.close-modal-x {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: var(--gray);
+}
+
+.admin-modal {
+    position: relative;
+    width: 90%;
+}
+
+.admin-modal .close-modal-x {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+}
+
+.admin-panel-content {
+    max-width: 750px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.admin-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.admin-panel-header h3 {
+    color: var(--primary-dark);
+}
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+}
+
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.admin-form-grid .full-width {
+    grid-column: 1 / -1;
+}
+
+.admin-form-grid select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+.admin-products-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-prod-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--light-bg);
+    padding: 12px 15px;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary);
+}
+
+.badge-cat {
+    background: var(--accent);
+    color: var(--dark);
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.admin-row-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-edit, .btn-delete {
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--white);
+    transition: var(--transition);
+}
+
+.btn-edit { background: var(--blue); }
+.btn-delete { background: var(--danger); }
+.btn-edit:hover, .btn-delete:hover { opacity: 0.85; transform: scale(1.05); }
+
+@media (max-width: 600px) {
+    .admin-form-grid { grid-template-columns: 1fr; }
+}
 
 }
